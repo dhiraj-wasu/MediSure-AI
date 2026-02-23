@@ -1,7 +1,7 @@
 
-from app.services.extractor import extract_signals
-from app.services.decision_engine import decide_mode, required_fields
-from app.services.expression import generate_question
+from app.services.chat_Agent.extractor import extract_signals
+from app.services.chat_Agent.decision_engine import decide_mode, required_fields
+from app.services.chat_Agent.expression import generate_question
 
 class ConversationalAgent:
 
@@ -13,11 +13,14 @@ class ConversationalAgent:
         })
 
         extracted = extract_signals(state["history"])
+        print("Extracted signals:", extracted)
 
         state = decide_mode(state, extracted)
+        print("Updated state:", state)
 
         missing = required_fields(state)
-
+        print("Missing field:", missing)
+        
         if missing:
             question = generate_question(state, missing)
             return question, state, None
